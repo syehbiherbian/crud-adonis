@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://127.0.0.1:3333"> -->
+    <title>Riot JS Sample</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <table-biodata></table-biodata>
+    <script src="bower_components/riot/riot.min.js"></script>
+    <script src="/bower_components/axios/dist/axios.min.js"></script>
+    <script src="tags/list.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+            riot.mount('table-biodata', {callback:loadBiodata});
+      
+            function loadBiodata(listBiodata) {
+              axios.get('http://127.0.0.1:3333/api/show')
+              .then(function(response){
+                if (response.status == 200) {
+                  var bio = response.data;
+                  listBiodata.trigger('data_loader', bio);
+                }
+              });  
+            }
+    </script>
+    <script>
+        $(document).ready(function(){
+        $("#mytable #checkall").click(function () {
+                if ($("#mytable #checkall").is(':checked')) {
+                    $("#mytable input[type=checkbox]").each(function () {
+                        $(this).prop("checked", true);
+                    });
+
+                } else {
+                    $("#mytable input[type=checkbox]").each(function () {
+                        $(this).prop("checked", false);
+                    });
+                }
+            });
+            
+            $("[data-toggle=tooltip]").tooltip();
+        });
+    </script>
+</body>
+</html>
